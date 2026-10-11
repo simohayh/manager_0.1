@@ -1,10 +1,7 @@
 using Microsoft.AspNetCore.Builder;
-<<<<<<< HEAD
 using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-=======
->>>>>>> 6ffc69fa9b33e4c09f1a7d56bcfa855b2bc6f70c
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
@@ -21,10 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddSingleton<StaffAuth>();      // staff PIN login (settings are checked at startup, see below)
 builder.Services.AddSingleton<LoginLimiter>();
-<<<<<<< HEAD
 builder.Services.AddSingleton<SettingsStore>();     // owner-editable settings (settings.json)
-=======
->>>>>>> 6ffc69fa9b33e4c09f1a7d56bcfa855b2bc6f70c
 builder.Services.AddHostedService<DbBackupService>();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -44,7 +38,6 @@ using (var scope = app.Services.CreateScope())
 }
 
 // --- Middleware ---
-<<<<<<< HEAD
 // Any unexpected error: log it (with details) and tell the browser only "something went wrong".
 app.UseExceptionHandler(errorApp => errorApp.Run(async context =>
 {
@@ -52,8 +45,6 @@ app.UseExceptionHandler(errorApp => errorApp.Run(async context =>
     await context.Response.WriteAsJsonAsync(new { success = false, message = "Something went wrong. Please try again." });
 }));
 
-=======
->>>>>>> 6ffc69fa9b33e4c09f1a7d56bcfa855b2bc6f70c
 // Behind Fly's proxy: learn that the original request was HTTPS (needed for the Secure cookie flag).
 var forwarded = new ForwardedHeadersOptions { ForwardedHeaders = ForwardedHeaders.XForwardedProto };
 forwarded.KnownNetworks.Clear();
@@ -68,22 +59,14 @@ app.Use(async (context, next) =>
     await next();
 });
 
-<<<<<<< HEAD
 // Staff APIs: deny by default. /api/kitchen needs a kitchen login, /api/cashier a cashier login, /api/admin the owner login.
-=======
-// Staff APIs: deny by default. Anything under /api/kitchen needs a kitchen login, /api/cashier a cashier login.
->>>>>>> 6ffc69fa9b33e4c09f1a7d56bcfa855b2bc6f70c
 // (The device-lock endpoints under /api/session check the role in the request themselves.)
 app.Use(async (context, next) =>
 {
     string? role =
         context.Request.Path.StartsWithSegments("/api/kitchen") ? StaffRoles.Kitchen :
-<<<<<<< HEAD
         context.Request.Path.StartsWithSegments("/api/cashier") ? StaffRoles.Cashier :
         context.Request.Path.StartsWithSegments("/api/admin") ? StaffRoles.Owner : null;
-=======
-        context.Request.Path.StartsWithSegments("/api/cashier") ? StaffRoles.Cashier : null;
->>>>>>> 6ffc69fa9b33e4c09f1a7d56bcfa855b2bc6f70c
 
     if (role != null && !context.RequestServices.GetRequiredService<StaffAuth>().IsAuthenticated(context, role))
     {
