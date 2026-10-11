@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Admin - Restaurant System</title>
+    <link rel="stylesheet" href="staff.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+    <header class="admin-header">
+        <h1>Owner Admin</h1>
+        <nav class="admin-tabs">
+            <button class="admin-tab active" data-tab="menu">Menu</button>
+            <button class="admin-tab" data-tab="sales">Sales</button>
+            <button class="admin-tab" data-tab="tables">Table QR codes</button>
+            <button class="admin-tab" data-tab="settings">Settings</button>
+        </nav>
+        <button class="btn-logout" id="admin-logout">Log out ⎋</button>
+    </header>
+
+    <main class="admin-main">
+
+        <!-- ===== MENU ===== -->
+        <section id="tab-menu" class="admin-panel">
+            <div class="panel-toolbar">
+                <button class="btn-primary" id="add-item-btn">+ Add item</button>
+                <button class="btn-danger-outline" id="clear-menu-btn">Remove ALL items</button>
+                <span class="hint">Items switched off are hidden from customers but kept here.</span>
+            </div>
+            <div id="menu-list" class="menu-list"></div>
+        </section>
+
+        <!-- ===== SALES ===== -->
+        <section id="tab-sales" class="admin-panel" hidden>
+            <div class="panel-toolbar">
+                <label>From <input type="date" id="report-from"></label>
+                <label>To <input type="date" id="report-to"></label>
+                <button class="btn-small" data-range="0">Today</button>
+                <button class="btn-small" data-range="6">Last 7 days</button>
+                <button class="btn-small" data-range="29">Last 30 days</button>
+                <button class="btn-primary" id="run-report-btn">Show</button>
+                <a class="btn-small" id="export-csv-link" href="#">Download CSV</a>
+            </div>
+            <p class="hint">Only bills the cashier has settled are counted. Days follow this device's time zone.</p>
+            <div id="report-error" class="form-error"></div>
+            <div id="report-cards" class="stat-cards"></div>
+            <div class="two-col">
+                <div>
+                    <h3>By day</h3>
+                    <div id="report-daily"></div>
+                </div>
+                <div>
+                    <h3>Best sellers</h3>
+                    <div id="report-top"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== TABLE QR CODES ===== -->
+        <section id="tab-tables" class="admin-panel" hidden>
+            <div class="panel-toolbar">
+                <label>Number of tables <input type="number" id="qr-count" min="1" max="50" value="10"></label>
+                <label>Address customers type/scan <input type="text" id="qr-base" placeholder="http://192.168.1.20:5000" size="30"></label>
+                <button class="btn-primary" id="qr-show-btn">Show QR codes</button>
+                <button class="btn-small" id="qr-print-btn">Print</button>
+            </div>
+            <p class="hint">Print these and stick one on each table. A customer can only order after scanning their table's code. The address must be the one phones use to reach this computer (not "localhost"). If you change <code>Auth__Secret</code> or the address, print new codes.</p>
+            <div id="qr-error" class="form-error"></div>
+            <div id="qr-grid" class="qr-grid"></div>
+        </section>
+
+        <!-- ===== SETTINGS ===== -->
+        <section id="tab-settings" class="admin-panel" hidden>
+            <div class="settings-card">
+                <h3>Restaurant</h3>
+                <label>Restaurant name
+                    <input type="text" id="set-name" maxlength="60">
+                </label>
+                <label>Currency symbol (shown before prices, e.g. $ or KSh)
+                    <input type="text" id="set-currency" maxlength="8">
+                </label>
+                <label class="check">
+                    <input type="checkbox" id="set-ip">
+                    Store customers' IP addresses with their orders
+                </label>
+                <p class="hint">Off by default for privacy. Switching it off also erases the addresses already stored.</p>
+                <label class="check">
+                    <input type="checkbox" id="set-require-key">
+                    Customers must scan the QR code on their table to order (recommended)
+                </label>
+                <p class="hint">Stops people from ordering for, or blocking, a table they are not sitting at. Turn off only for testing.</p>
+                <label>Biggest discount (% of the bill) the cashier can give without your PIN
+                    <input type="number" id="set-max-discount" min="0" max="100" step="1">
+                </label>
+                <p class="hint">Every discount and every removed item is written to the log with its reason. Bigger discounts ask for the owner PIN.</p>
+                <div id="settings-msg" class="form-error"></div>
+                <button class="btn-primary" id="save-settings-btn">Save settings</button>
+            </div>
+
+            <div class="settings-card">
+                <h3>Receipts</h3>
+                <label>Tax percent already included in your prices (0 = no tax line)
+                    <input type="number" id="set-tax" min="0" max="50" step="0.01">
+                </label>
+                <label>Tax / business number (printed on receipts, optional)
+                    <input type="text" id="set-taxid" maxlength="40">
+                </label>
+                <label>Receipt footer
+                    <input type="text" id="set-footer" maxlength="120">
+                </label>
+                <p class="hint">Check your local rules: some places require approved receipt equipment or specific wording. Saved with the settings above.</p>
+            </div>
+
+            <div class="settings-card">
+                <h3>Backup</h3>
+                <p class="hint">Download a full copy of your data (menu and every order). Keep copies on a USB drive or cloud storage, not only on this computer.
+                To restore: close the app, replace <code>restaurant.db</code> with the copy, start the app again.</p>
+                <a class="btn-primary" href="/api/admin/backup">Download backup now</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== Add / edit dialog ===== -->
+    <div id="item-dialog" class="dialog-backdrop" hidden>
+        <div class="dialog-box">
+            <h3 id="item-dialog-title">Add item</h3>
+            <label>Name <input type="text" id="item-name" maxlength="100"></label>
+            <label>Price <input type="number" id="item-price" min="0" step="0.01"></label>
+            <div class="row">
+                <label>Category
+                    <select id="item-category">
+                        <option value="Food">Food</option>
+                        <option value="Beverages">Beverages</option>
+                    </select>
+                </label>
+                <label>Dietary
+                    <select id="item-dietary">
+                        <option value="Non-Vegan">Non-Vegan</option>
+                        <option value="Vegetarian">Vegetarian</option>
+                        <option value="Vegan">Vegan</option>
+                    </select>
+                </label>
+            </div>
+            <label>Description <textarea id="item-description" rows="3" maxlength="500"></textarea></label>
+            <label>Photo
+                <input type="file" id="item-photo" accept="image/png,image/jpeg,image/webp">
+            </label>
+            <label>...or photo web address <input type="text" id="item-image-url" maxlength="255" placeholder="https://..."></label>
+            <img id="item-preview" class="photo-preview" alt="" hidden>
+            <label class="check"><input type="checkbox" id="item-available" checked> Available to order</label>
+            <div id="item-error" class="form-error"></div>
+            <div class="dialog-actions">
+                <button class="btn-small" id="item-cancel">Cancel</button>
+                <button class="btn-primary" id="item-save">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="common.js"></script>
+    <script src="qr.js"></script>
+    <script src="auth.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

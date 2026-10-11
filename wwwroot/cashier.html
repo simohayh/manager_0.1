@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Cashier Dashboard</title>
+    <link rel="stylesheet" href="staff.css">
+    <link rel="stylesheet" href="cashier.css">
+</head>
+<body>
+
+    <!-- Access lock: shown when another device is already using the cashier dashboard -->
+    <div id="lock-overlay" class="lock-overlay">
+        <div class="lock-card">
+            <h2 class="lock-title">Dashboard Locked</h2>
+            <p id="lock-msg" class="lock-msg">Another device is currently using the Cashier Dashboard. If you are taking over, please enter the handover code generated from the previous device's logout button.</p>
+            <input type="text" id="handover-code" class="lock-input" placeholder="Enter Logout Code (e.g. OUT-1234)">
+            <button class="lock-btn" onclick="claimDashboard()">Take Over Session</button>
+        </div>
+    </div>
+
+    <header>
+        <h1>Restaurant Cashier Live Feed</h1>
+        <div class="header-actions">
+            <div class="refresh-indicator">
+                <div class="pulse-dot"></div> Live Sync Active
+            </div>
+            <button class="btn-logout" id="sound-btn" type="button" onclick="onSoundButton()">🔕 Tap to enable sound</button>
+            <button class="btn-logout" onclick="logoutDevice()">Logout Device ⎋</button>
+        </div>
+    </header>
+
+    <div id="cashier-grid" class="dashboard-grid"></div>
+    <div id="toast-container"></div>
+
+    <script src="common.js"></script>
+<<<<<<< HEAD
+    <script src="staff-alerts.js"></script>
+    <script src="billing.js"></script>
+=======
+>>>>>>> 6ffc69fa9b33e4c09f1a7d56bcfa855b2bc6f70c
+    <script src="auth.js"></script>
+    <script src="session.js"></script>
+    <script src="cashier.js"></script>
+</body>
+</html>

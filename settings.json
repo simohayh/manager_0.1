@@ -1,0 +1,12 @@
+{
+  "RestaurantName": "memaw",
+  "CurrencySymbol": "ETB",
+  "StoreIpAddresses": true,
+  "RequireTableKey": true,
+  "MaxCashierDiscountPercent": 10,
+  "TaxPercent": 0,
+  "TaxId": "",
+  "ReceiptFooter": "Thank you for dining with us!",
+  "NextReceiptNumber": 5,
+  "MenuSeeded": true
+}

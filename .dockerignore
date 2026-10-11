@@ -1,0 +1,7 @@
+bin/
+obj/
+.vs/
+.git/
+flyctl.exe
+*.zip
+manager_0.1.csproj.user

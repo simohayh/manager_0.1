@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Menu & Ordering</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Countdown timer & progress bar (shown while any order is cooking) -->
+    <div class="customer-timer-container" id="customer-timer-section" style="display: none;">
+        <div class="progress-bar-wrapper">
+            <div class="progress-bar-fill" id="customer-progress-fill"></div>
+        </div>
+        <div class="timer-details">
+            <span id="customer-timer-label">Estimated time remaining:</span>
+            <span id="customer-countdown-text">-- min left</span>
+        </div>
+    </div>
+
+    <!-- Out of stock alert -->
+    <div id="outOfStockModal" class="oos-overlay">
+        <div class="oos-card">
+            <div class="oos-icon">❌</div>
+            <h3 class="oos-title">Item Out of Stock</h3>
+            <p id="oosMessage" class="oos-message"></p>
+            <button class="oos-btn" onclick="dismissOutOfStockModal()">OK</button>
+        </div>
+    </div>
+
+    <div class="header">
+        <h1 data-brand-title>RESTAURANT MENU</h1>
+    </div>
+    <div id="table-banner" class="table-banner" hidden></div>
+
+    <!-- CUSTOMER VIEW -->
+    <div id="customer-view">
+        <div class="search-container" id="search-bar-container">
+            <input type="text" id="search-input" class="search-input" placeholder="Search menu items..." oninput="fetchMenu()">
+        </div>
+
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="setCategory('All', this)">All Items</button>
+            <button class="tab-btn" onclick="setCategory('Food', this)">Food</button>
+            <button class="tab-btn" onclick="setCategory('Hot Beverages', this)">Hot Drinks</button>
+            <button class="tab-btn" onclick="setCategory('Cold Beverages', this)">Cold Drinks</button>
+            <button class="tab-btn" onclick="setDietary('Vegan', this)">Vegan</button>
+            <button class="tab-btn" onclick="setDietary('Non-Vegan', this)">Non-Vegan</button>
+            <button class="tab-btn" id="cart-tab-btn" onclick="showCartView(this)">🛒 Cart (<span id="cart-count">0</span>)</button>
+            <button class="tab-btn order-tab-highlight" id="my-orders-btn" onclick="showMyOrders(this)">📦 My Orders (<span id="orders-count">0</span>)</button>
+        </div>
+
+        <div class="menu-grid" id="menu-grid"></div>
+        <div class="orders-grid" id="cart-grid" style="display:none;"></div>
+        <div class="orders-grid" id="my-orders-grid" style="display:none;"></div>
+    </div>
+
+    <!-- ADD TO CART MODAL -->
+    <div class="modal-overlay" id="order-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-item-name">Item Name</h3>
+                <button class="close-btn" onclick="closeModal()">✕</button>
+            </div>
+
+            <div id="modal-form">
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" id="item-qty" value="1" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label>Special Instructions / Notes</label>
+                    <input type="text" id="item-notes" placeholder="e.g. Extra spicy, no onions...">
+                </div>
+                <button class="btn-submit" onclick="addToCart()">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="common.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

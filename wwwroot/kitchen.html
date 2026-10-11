@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen Command Center - Restaurant System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="staff.css">
+    <link rel="stylesheet" href="kitchen.css">
+</head>
+<body>
+
+    <!-- Access lock: shown when another device is already using the kitchen dashboard -->
+    <div id="lock-overlay" class="lock-overlay">
+        <div class="lock-card">
+            <h2 class="lock-title">Kitchen Dashboard Locked</h2>
+            <p id="lock-msg" class="lock-msg">Another device is currently active on the Kitchen Command Center. Enter the logout code provided by the previous device to take over.</p>
+            <input type="text" id="handover-code" class="lock-input" placeholder="Enter Logout Code (e.g. OUT-1234)">
+            <button class="lock-btn" onclick="claimDashboard()">Take Over Session</button>
+        </div>
+    </div>
+
+    <div class="kitchen-header">
+        <div>
+            <h1>Kitchen Command Center</h1>
+            <p>Live order preparation & tracking dashboard</p>
+        </div>
+        <div class="header-actions">
+            <div class="live-indicator">
+                <div class="pulse-dot"></div>
+                Live Sync Active
+            </div>
+            <button class="btn-logout" id="sound-btn" type="button" onclick="onSoundButton()">🔕 Tap to enable sound</button>
+            <button class="btn-logout" onclick="logoutDevice()">Logout Device ⎋</button>
+        </div>
+    </div>
+
+    <div class="kitchen-container">
+        <div class="kitchen-grid" id="kitchen-grid"></div>
+    </div>
+
+    <script src="common.js"></script>
+<<<<<<< HEAD
+    <script src="staff-alerts.js"></script>
+=======
+>>>>>>> 6ffc69fa9b33e4c09f1a7d56bcfa855b2bc6f70c
+    <script src="auth.js"></script>
+    <script src="session.js"></script>
+    <script src="kitchen.js"></script>
+</body>
+</html>

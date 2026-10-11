@@ -1,0 +1,149 @@
+/* Shared by the kitchen and cashier dashboards.
+   Each page defines --staff-bg and --staff-card in its own :root. */
+
+/* ===== Header controls ===== */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-logout {
+    background: #e53935;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.pulse-dot {
+    width: 10px;
+    height: 10px;
+    background-color: #4caf50;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 8px rgba(76, 175, 80, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+    }
+}
+
+/* ===== Lock screen (another device is active) ===== */
+.lock-overlay {
+    display: none; /* shown by session.js */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--staff-bg);
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+    color: #f4efe6;
+}
+
+.lock-card {
+    background: var(--staff-card);
+    padding: 30px;
+    border-radius: 12px;
+    border: 2px solid #ffd54f;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+}
+
+.lock-title {
+    color: #ffd54f;
+    margin-top: 0;
+}
+
+.lock-msg {
+    font-size: 0.95rem;
+    color: #d6c5b3;
+}
+
+.lock-input {
+    width: 100%;
+    padding: 10px;
+    margin: 15px 0;
+    border-radius: 6px;
+    border: 1px solid #ffd54f;
+    background: var(--staff-bg);
+    color: #fff;
+    text-align: center;
+    font-size: 1.1rem;
+    box-sizing: border-box;
+}
+
+.lock-btn {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* ===== "Logged out" screen with the handover code ===== */
+.logout-screen {
+    background: var(--staff-bg);
+    color: #f4efe6;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.logout-card {
+    background: var(--staff-card);
+    padding: 40px;
+    border-radius: 12px;
+    border: 2px solid #ffd54f;
+    max-width: 450px;
+}
+
+.logout-card h2 {
+    color: #ffd54f;
+}
+
+.logout-code {
+    font-size: 2rem;
+    font-weight: bold;
+    background: var(--staff-bg);
+    color: #ffd54f;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+    letter-spacing: 2px;
+}
+
+.logout-hint {
+    font-size: 0.85rem;
+    color: #d6c5b3;
+}
+
+/* ---- Connection lost + new order banners (staff-alerts.js) ---- */
+.conn-banner { position: sticky; top: 0; z-index: 99999; background: #c62828; color: #fff; text-align: center; padding: 10px 14px; font-weight: 700; }
+.new-order-banner { position: sticky; top: 0; z-index: 99998; background: #ffb300; color: #231b00; text-align: center; padding: 12px 14px; font-weight: 800; font-size: 1.1rem; }
+.conn-banner[hidden], .new-order-banner[hidden] { display: none; }
